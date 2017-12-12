@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PiPlate Relay Library UWP")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Simple Library to control the PiPlate found at http://pi-plates.com/relayr1/")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PiPlate Relay Library UWP")]
-[assembly: AssemblyCopyright("Copyright © Everyone 2017")]
+[assembly: AssemblyCopyright("Copyright © Travis Whidden 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
