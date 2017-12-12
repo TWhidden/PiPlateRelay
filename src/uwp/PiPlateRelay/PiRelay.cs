@@ -249,9 +249,9 @@ namespace PiPlateRelay
             return SendCommandAsync(r.Item1, PiRelayCommand.RelayOff, r.Item2, 0, 0, ignoreChecks);
         }
 
-        private static Tuple<byte, byte> GetAddressRelay(byte relay)
+        internal static Tuple<byte, byte> GetAddressRelay(byte relay)
         {
-            var address = (byte) (relay / 7);
+            var address = (byte) ((relay-1) / 7);
             var deviceRelay = (byte)(relay - (address * 7));
             return new Tuple<byte, byte>(address, deviceRelay);
         }
