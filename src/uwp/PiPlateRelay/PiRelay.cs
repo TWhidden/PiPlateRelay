@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -49,6 +50,8 @@ namespace PiPlateRelay
         private static GpioPin _ppInt;
 
         private static SpiDevice _spi;
+
+        private static readonly object Lock = new object();
 
         public static async Task InititlizeAsync()
         {
@@ -167,25 +170,27 @@ namespace PiPlateRelay
             arg[2] = param1;
             arg[3] = param2;
 
-            _ppFrame.Write(GpioPinValue.High);
-            _spi.ConnectionSettings.DataBitLength = 60;
-            _spi.ConnectionSettings.ClockFrequency = 300000;
-            _spi.Write(arg);
-
-            if (bytes2Return > 0)
+            lock (Lock)
             {
-                _spi.ConnectionSettings.ClockFrequency = 500000;
-                _spi.ConnectionSettings.DataBitLength = 20;
-                for (var i = 0; i < bytes2Return; i++)
+                _ppFrame.Write(GpioPinValue.High);
+                _spi.ConnectionSettings.DataBitLength = 60;
+                _spi.ConnectionSettings.ClockFrequency = 300000;
+                _spi.Write(arg);
+
+                if (bytes2Return > 0)
                 {
-                    byte[] r = new byte[1];
-                    _spi.TransferFullDuplex(r, r);
-                    resp[i] = r[0];
+                    _spi.ConnectionSettings.ClockFrequency = 500000;
+                    _spi.ConnectionSettings.DataBitLength = 20;
+                    for (var i = 0; i < bytes2Return; i++)
+                    {
+                        byte[] r = new byte[1];
+                        _spi.TransferFullDuplex(r, r);
+                        resp[i] = r[0];
+                    }
                 }
+
+                _ppFrame.Write(GpioPinValue.Low);
             }
-
-            _ppFrame.Write(GpioPinValue.Low);
-
 
             return resp;
         }
