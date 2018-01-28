@@ -205,6 +205,7 @@ namespace PiPlateRelay
                     _ppFrame.Write(GpioPinValue.Low);
                     
                 });
+
                 return resp;
                 //return Task.FromResult(resp);
             });
@@ -277,7 +278,7 @@ namespace PiPlateRelay
             await SendCommandAsync(r.Item1, PiRelayCommand.RelayToggle, r.Item2, 0, 0, ignoreChecks);
         }
 
-        public static async Task RelayOnAsync(byte relay, bool ignoreChecks = false)
+        public static async Task RelayOnAsync(byte relay, bool ignoreChecks = false, bool validateSuccess = false)
         {
             var r = GetAddressRelay(relay);
             await SendCommandAsync(r.Item1, PiRelayCommand.RelayOn, r.Item2, 0, 0, ignoreChecks);
