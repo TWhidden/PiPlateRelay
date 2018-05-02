@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Gpio;
 using Windows.Devices.Spi;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
 
 namespace PiPlateRelay
 {
@@ -39,8 +35,6 @@ namespace PiPlateRelay
 
     public static class PiRelay
     {
-        private static CoreDispatcher _coreDispatcher = CoreWindow.GetForCurrentThread().Dispatcher; 
-
         private static bool _isInitilized;
 
         public static IReadOnlyDictionary<byte, PiRelayInfo> RelaysAvailable { get; private set; }
@@ -118,7 +112,7 @@ namespace PiPlateRelay
                     return false;
                 }
 
-                _spi = SpiDevice.FromIdAsync(deviceInformationCollection[0].Id, settings).AsTask<SpiDevice>()
+                _spi = SpiDevice.FromIdAsync(deviceInformationCollection[0].Id, settings).AsTask()
                     .ConfigureAwait(false).GetAwaiter().GetResult();
                 return _spi != null;
             }

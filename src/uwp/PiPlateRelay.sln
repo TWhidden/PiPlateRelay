@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiPlateRelay", "PiPlateRelay\PiPlateRelay.csproj", "{75040A9C-4008-487E-8027-2FEDEE191302}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiPlateRelay.Tests", "PiPlateRelay.Tests\PiPlateRelay.Tests.csproj", "{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,26 +33,6 @@ Global
 		{75040A9C-4008-487E-8027-2FEDEE191302}.Release|x64.Build.0 = Release|x64
 		{75040A9C-4008-487E-8027-2FEDEE191302}.Release|x86.ActiveCfg = Release|x86
 		{75040A9C-4008-487E-8027-2FEDEE191302}.Release|x86.Build.0 = Release|x86
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Debug|ARM.ActiveCfg = Debug|ARM
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Debug|ARM.Build.0 = Debug|ARM
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Debug|ARM.Deploy.0 = Debug|ARM
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Debug|x64.ActiveCfg = Debug|x64
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Debug|x64.Build.0 = Debug|x64
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Debug|x64.Deploy.0 = Debug|x64
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Debug|x86.ActiveCfg = Debug|x86
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Debug|x86.Build.0 = Debug|x86
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Debug|x86.Deploy.0 = Debug|x86
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Release|Any CPU.ActiveCfg = Release|x86
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Release|ARM.ActiveCfg = Release|ARM
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Release|ARM.Build.0 = Release|ARM
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Release|ARM.Deploy.0 = Release|ARM
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Release|x64.ActiveCfg = Release|x64
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Release|x64.Build.0 = Release|x64
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Release|x64.Deploy.0 = Release|x64
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Release|x86.ActiveCfg = Release|x86
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Release|x86.Build.0 = Release|x86
-		{CB9306A1-A4F9-4473-B8D7-95ADE2B3A0F2}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
