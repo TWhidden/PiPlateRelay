@@ -5,9 +5,9 @@ CONFIG -= app_bundle
 CONFIG += exceptions
 CONFIG += thread
 
-TARGET = blinkLib
+TARGET = RelayPlate
 TEMPLATE = lib
-
+VERSION = 1
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt whi-lwiringPich as been marked deprecated (the exact warnings
@@ -23,7 +23,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp \
            spibase.cpp \
            relayplate.cpp \
-           daqc2plate.cpp
+           daqc2plate.cpp \
+           coreexports.cpp \
 
 LIBS += -lwiringPi -lcrypt -lrt
 
@@ -40,6 +41,7 @@ HEADERS += \
     spibase.h \
     relayplate.h \
     daqc2plate.h \
+    coreexports.h \
     
 
 

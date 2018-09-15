@@ -1,3 +1,1 @@
-extern "C"  int create_new_class(void** ppClassPtr, int param1, int param2 );
-
-extern "C" int destroy_myclass(void* classptr);
+export "C" int SetPinState(uint8_t boardId, uint8_t pin, uint8_t state);

@@ -25,7 +25,7 @@ SOURCES += main.cpp \
            relayplate.cpp \
            daqc2plate.cpp
 
-LIBS += -lwiringPi
+LIBS += -lwiringPi -lcrypt -lrt
 
 
 QMAKE_INCDIR +=  $$[QT_SYSROOT]/usr/local/include
