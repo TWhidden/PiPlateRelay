@@ -286,3 +286,13 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+/src/cpp/spibase.o
+/src/cpp/relayplate.o
+/src/cpp/main.o
+/src/cpp/libRelayPlate.so.1.0.0
+/src/cpp/libRelayPlate.so.1.0
+/src/cpp/libRelayPlate.so.1
+/src/cpp/libRelayPlate.so
+/src/cpp/daqc2plate.o
+/src/cpp/coreexports.o
+/src/cpp/.qmake.stash

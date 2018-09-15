@@ -3,19 +3,23 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
+using PiRelayPlate.NetCore.Resources;
 
 namespace PiRelayPlate.NetCore
 {
     public static class RelayPlate
     {
-        private const string LibFileName = "libRelayPlate.so";
+        private const string LibFileName = "libRelayPlate";
 
         static RelayPlate()
         {
+            Console.WriteLine("Init RelayPlate - Ensuring supported libraries exist");
             // Ensure the file has been created / updated in the directory
             var executingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            var libPath = Path.Combine(executingDirectory, LibFileName);
+            var libPath = Path.Combine(executingDirectory, $"{LibFileName}.so");
+
+            Console.WriteLine($"Looking for existance of {libPath}");
 
             if (File.Exists(libPath))
             {
@@ -33,12 +37,14 @@ namespace PiRelayPlate.NetCore
             // Attempt to write the current resource file
             try
             {
-                File.WriteAllBytes(libPath, Properties.Resources.libRelayPlate);
+                EmbeddedResources.ExtractAll();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Could not add file {LibFileName}. Error: {ex.Message}");
             }
+
+            Console.WriteLine("RelayPlate Static Init Complete");
         }
 
 
