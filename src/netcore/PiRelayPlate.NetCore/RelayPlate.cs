@@ -1,6 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
 using PiRelayPlate.NetCore.Resources;
@@ -11,45 +10,88 @@ namespace PiRelayPlate.NetCore
     {
         private const string LibFileName = "libRelayPlate";
 
+        private static int _platesAvailable = -1;
+
         static RelayPlate()
         {
-            Console.WriteLine("Init RelayPlate - Ensuring supported libraries exist");
-            // Ensure the file has been created / updated in the directory
-            var executingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            var libPath = Path.Combine(executingDirectory, $"{LibFileName}.so");
-
-            Console.WriteLine($"Looking for existance of {libPath}");
-
-            if (File.Exists(libPath))
-            {
-                // attempt to remove the file first
-                try
-                {
-                    File.Delete(libPath);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Could not remove file {LibFileName}. Error: {ex.Message}");
-                }
-            }
-
-            // Attempt to write the current resource file
             try
             {
                 EmbeddedResources.ExtractAll();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Could not add file {LibFileName}. Error: {ex.Message}");
+                Console.WriteLine($"Error extracting required resources. Error: {ex.Message}");
             }
-
-            Console.WriteLine("RelayPlate Static Init Complete");
         }
 
+        public const byte MaxPinsPerRelayBoard = 7;
 
-        // ToDo: fix mangled name on c export
+        /// <summary>
+        /// Its important that we don't call this method while its currently executing another
+        /// command. Because of this, we have made this a synchronized call. 
+        /// If there are other API calls that need to be made, a locking component will 
+        /// be required to synchronize all calls. 
+        /// </summary>
+        /// <param name="pin"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static bool SetPinState(byte pin, byte state)
+        {
+            var boardId = pin / MaxPinsPerRelayBoard;
+            var correctPin = pin % MaxPinsPerRelayBoard;
+
+            // Because the modulus of correctPin may be 0 (indicating a perfect)
+            // division, we know we are on the last pin of the desired board.
+            // therefor we will set the pin to the last pin ID,
+            // and de-increment the boardId.
+            if (correctPin == 0)
+            {
+                correctPin = MaxPinsPerRelayBoard;
+                boardId--;
+            }
+
+            return SetPinState((byte)boardId, (byte)correctPin, state);
+        }
+
+        public static bool SetPinState(byte boardId, byte pin, byte state)
+        {
+            if (_platesAvailable == -1)
+            {
+                _platesAvailable = RelaysAvailable();
+            }
+
+            if (_platesAvailable == 0)
+            {
+                Console.WriteLine("No PiPlates Available");
+                return false;
+            }
+
+            if (boardId > _platesAvailable)
+            {
+                Console.WriteLine($"Request for Board {boardId} failed. Only {_platesAvailable} available");
+                return false;
+            }
+
+            if (pin > 7)
+            {
+                Console.WriteLine($"Pin requested {pin} is higher than 7");
+            }
+
+            return SetPinStateImpl(boardId, pin, state) == 0;
+        }
+
+        public static int RelaysAvailable()
+        {
+            _platesAvailable = RelaysAvailableImpl();
+            return _platesAvailable;
+        }
+    
+        // TODO: fix mangled name on c export
         [DllImport(LibFileName, EntryPoint = "_Z11SetPinStatehhh", CallingConvention = CallingConvention.StdCall, PreserveSig = true), SuppressUnmanagedCodeSecurity]
-        public static extern int SetPinState(byte boardId, byte pin, byte state);
+        private static extern int SetPinStateImpl(byte boardId, byte pin, byte state);
+
+        [DllImport(LibFileName, EntryPoint = "_Z15RelaysAvailablev", CallingConvention = CallingConvention.StdCall, PreserveSig = true), SuppressUnmanagedCodeSecurity]
+        private static extern int RelaysAvailableImpl();
     }
 }

@@ -7,18 +7,18 @@ namespace PiRelayPlate.NetCore.TestConsole
         static void Main(string[] args)
         {
             // Loop over the relay stack
-            var devicesToProcess = 7;
-            var pinsperDevice = 7;
+            const int devicesToProcess = 7;
+            const int pinsPerDevice = 7;
 
             for (byte devicesId = 0; devicesId < devicesToProcess; devicesId++)
             {
-                for (byte pin = 0; pin < pinsperDevice; pin++)
+                for (byte pin = 0; pin < pinsPerDevice; pin++)
                 {
                     Console.WriteLine($"Device: {devicesId}; Pin: {pin}; (cycle)");
                     var result = RelayPlate.SetPinState(devicesId, pin, 1);
-                    if (result != 0)
+                    if (result != true)
                     {
-                        Console.WriteLine($"Device: {devicesId}; Pin: {pin} failed with returned with code {result}");
+                        Console.WriteLine($"Device: {devicesId}; Pin: {pin} failed");
                         continue;
                     }
                     System.Threading.Thread.Sleep(250);
