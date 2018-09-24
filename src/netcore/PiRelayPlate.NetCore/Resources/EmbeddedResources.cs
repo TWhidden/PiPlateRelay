@@ -57,6 +57,27 @@ namespace PiRelayPlate.NetCore.Resources
                         stream?.CopyTo(outputStream);
                     }
                 }
+
+                try
+                {
+                    // copy to local user lib folder
+                    targetPath = Path.Combine("/usr/lib", filename);
+                    if (!File.Exists(targetPath))
+                    {
+                        using (var stream = Assembly.GetExecutingAssembly()
+                            .GetManifestResourceStream($"{typeof(EmbeddedResources).Namespace}.{filename}"))
+                        {
+                            using (var outputStream = File.OpenWrite(targetPath))
+                            {
+                                stream?.CopyTo(outputStream);
+                            }
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Could not write '{targetPath}'; Error: {ex.Message}");
+                }
             }
         }
     }

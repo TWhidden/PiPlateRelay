@@ -2,14 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyVersion>1.18.0919.0</AssemblyVersion>
+    <FileVersion>1.18.0919.0</FileVersion>
+    <Version>1.18.919</Version>
+    <Authors>Travis Whidden</Authors>
+    <Company>N/A</Company>
+    <Description>PiPlate Relay net core impl</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\libRelayPlate.so" />
+    <None Remove="Resources\libwiringPi.so.2.46" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\libRelayPlate.so" />
+    <EmbeddedResource Include="Resources\libwiringPi.so.2.46" />
   </ItemGroup>
 
   <ItemGroup>
