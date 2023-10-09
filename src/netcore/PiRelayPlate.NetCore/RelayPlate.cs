@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -56,26 +57,41 @@ namespace PiRelayPlate.NetCore
 
         public static bool SetPinState(byte boardId, byte pin, byte state)
         {
+            // before calling the native code, do a quick check to see if there are files in /dev
+            // that control SPI - if not, the native code may not exit correctly causing 
+            // an app crash
+            if (Directory.GetFiles("/dev", "spidev*").Length == 0)
+            {
+                Console.WriteLine("No SPI Devices in /dev!");
+                _platesAvailable = 0;
+                return false;
+            }
+            
+            // this will init the Relays (if there are any attached)
             if (_platesAvailable == -1)
             {
                 _platesAvailable = RelaysAvailable();
             }
 
+            // If there are no relays detected, return false
             if (_platesAvailable == 0)
             {
                 Console.WriteLine("No PiPlates Available");
                 return false;
             }
 
+            // validate the board being requested to ensure it exists before we can send a command to it.
             if (boardId > _platesAvailable)
             {
                 Console.WriteLine($"Request for Board {boardId} failed. Only {_platesAvailable} available");
                 return false;
             }
 
-            if (pin > 7)
+            // Ensure that we don't send pins outside 1-7
+            if (pin > 7 || pin == 0)
             {
                 Console.WriteLine($"Pin requested {pin} is higher than 7");
+                return false;
             }
 
             return SetPinStateImpl(boardId, pin, state) == 0;
@@ -83,6 +99,15 @@ namespace PiRelayPlate.NetCore
 
         public static int RelaysAvailable()
         {
+            // before calling the native code, do a quick check to see if there are files in /dev
+            // that control SPI - if not, the native code may not exit correctly causing 
+            // an app crash
+            if (Directory.GetFiles("/dev", "spidev*").Length == 0)
+            {
+                Console.WriteLine("No SPI Devices in /dev!");
+                return 0;
+            }
+
             _platesAvailable = RelaysAvailableImpl();
             return _platesAvailable;
         }
